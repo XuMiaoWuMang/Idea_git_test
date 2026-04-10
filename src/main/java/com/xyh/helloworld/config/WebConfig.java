@@ -11,7 +11,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor())
-                .addPathPatterns("/api/**")               // 拦截 /api 下所有请求
-                .excludePathPatterns("/api/users/login"); // 仅放行登录接口（其他精细化放行在拦截器内实现）
+                .addPathPatterns("/api/**")           // 拦截所有 /api 开头的请求
+                .excludePathPatterns(
+                        "/api/users/login",           // 放行登录
+                        "/api/users"                  // 放行注册（POST 请求）
+                );
     }
 }
