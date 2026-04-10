@@ -21,12 +21,12 @@ public class AuthInterceptor implements HandlerInterceptor {
         // 2. 细粒度放行规则（完全无 Token 要求）
         // 规则 A: POST /api/users → 允许注册
         boolean isCreateUser = "POST".equalsIgnoreCase(method) && "/api/users".equals(uri);
-        // 规则 B: GET /api/users/{id} → 允许查看用户信息
-        boolean isGetUser = "GET".equalsIgnoreCase(method) && uri.startsWith("/api/users/");
 
-        if (isCreateUser || isGetUser) {
+        if (isCreateUser) {
             return true;  // 直接放行，无需 Token
         }
+//        // 规则 B: GET /api/users/{id} → 允许查看用户信息
+//        boolean isGetUser = "GET".equalsIgnoreCase(method) && uri.startsWith("/api/users/");
 
         // 3. 其他请求（DELETE、PUT、GET /api/users 列表等）严格校验 Token
         String token = request.getHeader("Authorization");

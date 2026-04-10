@@ -1,48 +1,33 @@
 package com.xyh.helloworld.controller;
 
 import com.xyh.helloworld.common.Result;
-import jakarta.servlet.http.HttpServletRequest;
+import com.xyh.helloworld.dto.UserDTO;
+import com.xyh.helloworld.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
-    // 1. 查询用户信息（GET /api/users/{id}）
-    @GetMapping("/{id}")
-    public Result<String> getUser(@PathVariable Long id) {
-        String data = "查询成功，正在返回 ID 为 " + id + " 的用户信息";
-        return Result.success(data);
-    }
+    @Autowired
+    private UserService userService;
 
-    // 2. 创建用户（注册） POST /api/users
+    // 注册接口 POST /api/users
     @PostMapping
-    public Result<String> createUser(@RequestBody(required = false) Object userInfo) {
-        // 模拟注册逻辑
-        return Result.success("注册成功，用户已创建");
+    public Result<String> register(@RequestBody UserDTO userDTO) {
+        return userService.register(userDTO);
     }
 
-    // 3. 登录接口（全局放行，无需 Token）
+    // 登录接口 POST /api/users/login
     @PostMapping("/login")
-    public Result<String> login(@RequestBody(required = false) Object loginInfo) {
-        // 实际项目中应校验用户名密码，并生成 JWT 返回
-        String mockToken = "mock-jwt-token-xyz";
-        return Result.success("登录成功，请使用 Authorization header 携带: " + mockToken);
+    public Result<String> login(@RequestBody UserDTO userDTO) {
+        return userService.login(userDTO);
     }
 
-    // 4. 删除用户（敏感操作，需要 Token）
-    @DeleteMapping("/{id}")
-    public Result<String> deleteUser(@PathVariable Long id, HttpServletRequest request) {
-        // 拦截器已保证 Token 存在，这里直接执行业务
-        String token = request.getHeader("Authorization");
-        return Result.success("用户 ID " + id + " 已删除，使用的 Token: " + token);
-    }
-
-    // 5. 更新用户（敏感操作，需要 Token）
-    @PutMapping("/{id}")
-    public Result<String> updateUser(@PathVariable Long id, @RequestBody(required = false) Object userInfo,
-                                     HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        return Result.success("用户 ID " + id + " 已更新，使用的 Token: " + token);
+    // 查询用户信息（用于测试拦截器放行）
+    @GetMapping("/{id}")
+    public Result<String> getUser(@PathVariable("id") Long id) {
+        return Result.success("查询成功，正在返回 ID 为 " + id + " 的用户信息");
     }
 }
