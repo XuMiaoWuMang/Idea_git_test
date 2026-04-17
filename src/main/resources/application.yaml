@@ -1,9 +1,12 @@
 spring:
+  sql:
+    init:
+      mode: never
   application:
     name: hello-world
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/lab_db
+    url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: admin   # 请替换为你的实际密码
 
@@ -11,6 +14,7 @@ spring:
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true  # 开启驼峰转换，例如 user_name -> userName
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   # 控制台打印SQL
   global-config:
     db-config:
       id-type: auto   # 主键自增策略
