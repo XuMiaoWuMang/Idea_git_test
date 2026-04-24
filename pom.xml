@@ -48,6 +48,13 @@
             <version>3.5.11</version>
         </dependency>
 
+        <!-- MyBatis-Plus 分页插件所需 SQL 解析器 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-jsqlparser</artifactId>
+            <version>3.5.11</version>
+        </dependency>
+
         <!-- PostgreSQL 驱动 -->
         <dependency>
             <groupId>org.postgresql</groupId>
