@@ -25,6 +25,11 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (isCreateUser) {
             return true;  // 直接放行，无需 Token
         }
+
+        boolean isPageQuery = "GET".equalsIgnoreCase(method) && "/api/users/page".equals(uri);
+        if (isPageQuery) {
+            return true;   // 无需 token 即可访问
+        }
 //        // 规则 B: GET /api/users/{id} → 允许查看用户信息
 //        boolean isGetUser = "GET".equalsIgnoreCase(method) && uri.startsWith("/api/users/");
 
